@@ -143,7 +143,7 @@ function drawEqualizer() {
         smoothedData[i] = (SMOOTHING_FACTOR * smoothedData[i]) + ((1 - SMOOTHING_FACTOR) * rawValue);
 
         // Scale up the bar height (multiply by 1.0 for taller bars)
-        const barHeight = smoothedData[i] * 1.8;
+        const barHeight = smoothedData[i] * 1.6;
         const numBoxes = Math.floor(barHeight / (boxHeight + boxGap));
         
         // Update peak hold
@@ -187,7 +187,7 @@ function drawEqualizer() {
         ctx.save();
         ctx.globalAlpha = 0.25;
         
-        const reflectionHeight = barHeight * 1.0;
+        const reflectionHeight = barHeight * 0.5;
         const reflectionBoxes = Math.floor(reflectionHeight / (boxHeight + boxGap));
         
         for (let j = 0; j < reflectionBoxes; j++) {
