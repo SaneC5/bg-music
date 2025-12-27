@@ -109,26 +109,41 @@ function drawEqualizer() {
     const boxGap = 2; // Gap between boxes
     let x = 0;
     const currentTime = Date.now();
-    const midY = canvas.height * 2 / 3;
+    const midY = canvas.height * 0.75;
 
     for (let i = 0; i < visibleBars; i++) {
-        // Sample from different frequency ranges for variation
-        const index = Math.floor((i * bufferLength) / visibleBars);
-        let rawValue = dataArray[index];
+        // Create symmetry: mirror frequencies around center
+        // Bars 0-9 mirror bars 19-10
+        const centerIndex = (visibleBars - 1) / 2; // 9.5
+        let mirrorIndex;
+
+        if (i <= centerIndex) {
+            // Left side: map 0->9 to frequencies 9->0 (REVERSED)
+            mirrorIndex = Math.floor(centerIndex) - i;
+        } else {
+            // Right side: map 10->19 to frequencies 0->9 (mirror left side)
+            mirrorIndex = i - Math.ceil(centerIndex);
+        }
+        
+        // Sample from frequency bins using mirrorIndex
+        const start = Math.floor((mirrorIndex * bufferLength) / (visibleBars / 2));
+        const end = Math.floor(((mirrorIndex + 1) * bufferLength) / (visibleBars / 2));
+
+        let sum = 0;
+        for (let j = start; j < end; j++) {
+            sum += dataArray[j];
+        }
+        let rawValue = sum / (end - start);
         
         // Apply frequency-based scaling for more varied heights
-        const frequencyMultiplier = 1 + (i / visibleBars) * 0.5;
+        const frequencyMultiplier = 1 + (mirrorIndex / (visibleBars / 2)) * 0.5;
         rawValue = Math.min(255, rawValue * frequencyMultiplier);
         
         // Smooth the data for more natural movement
         smoothedData[i] = (SMOOTHING_FACTOR * smoothedData[i]) + ((1 - SMOOTHING_FACTOR) * rawValue);
-        
-        const centerIndex = (visibleBars - 1) / 2;
-        const distanceFromCenter = Math.abs(i - centerIndex);
-        const taper = 1 - (distanceFromCenter / (visibleBars / 2));
 
         // Scale up the bar height (multiply by 1.0 for taller bars)
-        const barHeight = smoothedData[i] * 1.0 * taper;
+        const barHeight = smoothedData[i] * 1.8;
         const numBoxes = Math.floor(barHeight / (boxHeight + boxGap));
         
         // Update peak hold
