@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Music Website</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+     <!-- Notification for Autoplay Block -->
+     <div id="autoplayMessage" class="notification">
+        <p>It seems like autoplay is blocked in your browser. Please press "&#x25B6;" to start the music!</p>
+    </div>
+
+    <!-- Audio Player -->
+    <audio id="backgroundMusic" loop>
+        <source src="aud/KennyGSaxSongBird.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Theme Toggle -->
+    <button id="themeToggle">🌙</button>
+    <!-- Page Header -->
+    <header>
+        <h1>&#127925;&#127926;&#x1F3BC;Enjoy the Soothing Music! &#x1F3BC;&#127926;&#127925;</h1>
+    </header>
+
+    <!-- Playlist Controls -->
+    <div class="playlist-controls">
+
+        <div id="currentSong">Current Music: <span id="songTitle">Song 1</span></div>
+            <div style="display: flex; justify-content: space-around;">
+                <!-- Equalizer Visualization -->
+                <canvas id="equalizer" width="700" height="420"></canvas>
+
+                <div style="display: flex; flex-direction: column; justify-content: center;">
+                    <!-- Music Controls -->
+                    <div class="controls">
+                        <button id="playPauseBtn">&#x25B6;</button>
+                        <label for="volume">&#128266;</label>
+                        <input type="range" id="volume" min="0" max="1" step="0.1" value="1">
+                    </div>
+                    <div>
+                        <button id="prevBtn">&#8592; Prev</button>
+                        <button id="nextBtn">Next &#8594;</button>
+                    </div>
+                    
+                </div>
+
+            </div>
+        </div>
+        
+    </div>
+   
+    <script src="js/script.js"></script>
+</body>
+</html>
